@@ -6,6 +6,10 @@ const cors = require("cors");
 const axios = require("axios");
 const port = process.env.PORT;
 
+// const mongoose = require('mongoose');
+
+// mongoose.connect('mongodb://127.0.0.1:27017/test');
+
 app.listen(port,()=>{
     console.log(`app is running at localhost:${port}`);
 });
@@ -71,7 +75,7 @@ app.post("/stk", generateToken , async (req,res)=>{
             PartyA:`254${phone}`,    
             PartyB:shortcode,    
             PhoneNumber:`254${phone}`,    
-            CallBackURL: "https://6169-102-222-146-42.ngrok-free.app/callback",    
+            CallBackURL: "https://f07c-102-222-146-42.ngrok-free.app/callback",    
             AccountReference:`254${phone}`,    
             TransactionDesc:"Test"
          },
@@ -92,4 +96,10 @@ app.post("/stk", generateToken , async (req,res)=>{
 app.post("/callback", (req,res)=>{
     const callbackData = req.body;
     console.log(callbackData.Body);
+
+    if(!callbackData.Body.stkCallback.CallbackMetadata){
+        console.log(callbackData.Body.stkCallback.CallbackMetadata);
+        return res.json("ok");
+    }
+    console.log(callbackData.Body.stkCallback.CallbackMetadata);
 })
