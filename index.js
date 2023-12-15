@@ -79,7 +79,7 @@ app.post("/stk", generateToken , async (req,res)=>{
             PartyA:`254${phone}`,    
             PartyB:shortcode,    
             PhoneNumber:`254${phone}`,    
-            CallBackURL: "https://5aed-102-222-146-42.ngrok-free.app/callback",    
+            CallBackURL: "https://ebenezer-8t75.onrender.com/callback",    
             AccountReference:`254${phone}`,    
             TransactionDesc:"Test"
          },
