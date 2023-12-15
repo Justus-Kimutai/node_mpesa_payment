@@ -19,8 +19,8 @@ app.use(express.urlencoded({extended:true}));
 app.use(cors());
 
 
-app.get("/token",(req,res)=>{
-    generateToken();
+app.get('/', (req, res) => {
+    res.send('Hello, world!');
 });
 
 const generateToken = async (req,res,next)=>{
@@ -75,7 +75,7 @@ app.post("/stk", generateToken , async (req,res)=>{
             PartyA:`254${phone}`,    
             PartyB:shortcode,    
             PhoneNumber:`254${phone}`,    
-            CallBackURL: "https://f07c-102-222-146-42.ngrok-free.app/callback",    
+            CallBackURL: "https://mydomain.com/pat",    
             AccountReference:`254${phone}`,    
             TransactionDesc:"Test"
          },
@@ -83,7 +83,8 @@ app.post("/stk", generateToken , async (req,res)=>{
             headers:{
                 Authorization:`Bearer ${token}`
             }
-         }
+        }
+            //https://mydomain.com/pat
     ).then((data)=>{
         console.log(data.data);
         res.status(200).json(data.data)
@@ -103,3 +104,4 @@ app.post("/callback", (req,res)=>{
     }
     console.log(callbackData.Body.stkCallback.CallbackMetadata);
 })
+
