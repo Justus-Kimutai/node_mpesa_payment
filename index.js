@@ -5,10 +5,16 @@ require("dotenv").config();
 const cors = require("cors");
 const axios = require("axios");
 const port = process.env.PORT;
+const uri = process.env.URI
+const Payment = require("./models/paymentModel")
 
-// const mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
-// mongoose.connect('mongodb://127.0.0.1:27017/test');
+mongoose.connect(uri).then(()=>{
+    console.log('db connected succesfully');
+}).catch((err)=>{
+    console.log(err.message);
+})
 
 app.listen(port,()=>{
     console.log(`app is running at localhost:${port}`);
@@ -17,7 +23,6 @@ app.listen(port,()=>{
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(cors());
-
 app.get('/', (req, res) => {
     res.send('Hello, world!');
 });
@@ -74,7 +79,7 @@ app.post("/stk", generateToken , async (req,res)=>{
             PartyA:`254${phone}`,    
             PartyB:shortcode,    
             PhoneNumber:`254${phone}`,    
-            CallBackURL: "https://mydomain.com/pat",    
+            CallBackURL: "https://5aed-102-222-146-42.ngrok-free.app/callback",    
             AccountReference:`254${phone}`,    
             TransactionDesc:"Test"
          },
@@ -101,6 +106,23 @@ app.post("/callback", (req,res)=>{
         console.log(callbackData.Body.stkCallback.CallbackMetadata);
         return res.json("ok");
     }
-    console.log(callbackData.Body.stkCallback.CallbackMetadata);
-})
 
+    console.log(callbackData.Body.stkCallback.CallbackMetadata);
+
+     const phone = callbackData.Body.stkCallback.CallbackMetadata.Item[4].Value;
+     const amount = callbackData.Body.stkCallback.CallbackMetadata.Item[0].Value;
+     const trnx_id = callbackData.Body.stkCallback.CallbackMetadata.Item[1].Value;
+
+    const payment = new Payment();
+
+    payment.number = phone;
+    payment.amount = amount;
+    payment.trnx_id = trnx_id;
+
+    payment.save().then((data)=>{
+        console.log({message:"saved succesfully",data});
+    }).catch((err)=>{
+        console.log(err.message);
+    })
+
+})
