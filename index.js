@@ -126,3 +126,14 @@ app.post("/callback", (req,res)=>{
     })
 
 })
+
+app.get('/payments', async (req, res) => {
+    try {
+      // Retrieve all payments from the database
+      const payments = await Payment.find();
+      res.json(payments);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  });
