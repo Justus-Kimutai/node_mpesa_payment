@@ -83,7 +83,7 @@ app.post("/stk", generateToken , async (req,res)=>{
                 Authorization:`Bearer ${token}`
             }
         }
-            //https://mydomain.com/pat
+        
     ).then((data)=>{
         console.log(data.data);
         res.status(200).json(data.data)
