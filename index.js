@@ -111,13 +111,11 @@ app.post("/callback", (req,res)=>{
 
      const phone = callbackData.Body.stkCallback.CallbackMetadata.Item[4].Value;
      const amount = callbackData.Body.stkCallback.CallbackMetadata.Item[0].Value;
-     const trnx_id = callbackData.Body.stkCallback.CallbackMetadata.Item[1].Value;
 
     const payment = new Payment();
 
     payment.number = phone;
     payment.amount = amount;
-    payment.trnx_id = trnx_id;
 
     payment.save().then((data)=>{
         console.log({message:"saved succesfully",data});
@@ -126,6 +124,7 @@ app.post("/callback", (req,res)=>{
     })
 
 })
+
 
 app.get('/payments', async (req, res) => {
     try {
@@ -137,3 +136,4 @@ app.get('/payments', async (req, res) => {
       res.status(500).json({ error: 'Internal Server Error' });
     }
   });
+
